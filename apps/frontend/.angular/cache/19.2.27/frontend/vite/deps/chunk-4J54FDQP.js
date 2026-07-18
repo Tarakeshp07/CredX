@@ -1,25 +1,25 @@
 import {
   withHttpTransferCache
-} from "./chunk-4F4CJ3XY.js";
+} from "./chunk-3OTT2IP4.js";
 import {
   DomRendererFactory2,
   EVENT_MANAGER_PLUGINS,
   EventManager,
   EventManagerPlugin,
   SharedStylesHost
-} from "./chunk-YLWZPB3H.js";
+} from "./chunk-LPWZZKTQ.js";
 import {
   CommonModule,
   DomAdapter,
   getDOM,
   setRootDomAdapter
-} from "./chunk-JLZKDQT7.js";
+} from "./chunk-TP2VD567.js";
 import {
   DOCUMENT,
   PLATFORM_BROWSER_ID,
   XhrFactory,
   parseCookieValue
-} from "./chunk-KSF4HU3K.js";
+} from "./chunk-AQ6UKDEE.js";
 import {
   ApplicationModule,
   ApplicationRef,
@@ -73,10 +73,10 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-I22VTGML.js";
+} from "./chunk-J6YSA62T.js";
 import {
   __spreadValues
-} from "./chunk-7R3WC7F2.js";
+} from "./chunk-IVSRFTZX.js";
 
 // node_modules/@angular/platform-browser/fesm2022/browser-0WrrQdE0.mjs
 var BrowserDomAdapter = class _BrowserDomAdapter extends DomAdapter {
@@ -1303,4 +1303,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-6SDIIL67.js.map
+//# sourceMappingURL=chunk-4J54FDQP.js.map

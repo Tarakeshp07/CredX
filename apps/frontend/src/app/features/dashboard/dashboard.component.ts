@@ -33,13 +33,22 @@ const EMP_TYPES = [
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-<div class="dash-page">
+<div class="dash-page" style="padding-top: 0px;">
+  @if (auth.isDemoMode()) {
+    <div class="demo-banner">
+      <span class="demo-banner__badge">Demo Mode</span>
+      <span>Operating offline using mock local data. Backend connectivity is simulated.</span>
+      <button class="btn-ghost" (click)="auth.logout()" style="padding: 2px 10px; font-size: 0.75rem; border-color: rgba(124, 111, 247, 0.4);">
+        Exit Demo
+      </button>
+    </div>
+  }
 
   <!-- BG Accents -->
   <div class="dash-bg dash-bg--tl"></div>
   <div class="dash-bg dash-bg--br"></div>
 
-  <div class="page-container">
+  <div class="page-container" style="margin-top: 36px;">
 
     <!-- Incomplete Profile Warning Banner -->
     @if (!isProfileComplete()) {
@@ -249,6 +258,9 @@ const EMP_TYPES = [
                 <div class="job-card__info">
                   <div class="job-card__title-row">
                     <h2 class="job-card__title">{{ item.job.title }}</h2>
+                    <span class="mobile-score-badge" [class]="bandClass(item.band)">
+                      {{ item.matchScore }}% {{ item.band }}
+                    </span>
                     @if (item.applied) {
                       <span class="applied-badge">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" style="width:12px;height:12px;">
@@ -935,6 +947,21 @@ const EMP_TYPES = [
     .band-good   { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
     .band-fair   { background: rgba(100,116,139,0.2); color: #94a3b8; border: 1px solid rgba(100,116,139,0.2); }
 
+    .mobile-score-badge {
+      display: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 600px) {
+      .mobile-score-badge {
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+
     /* ── Description ── */
     .job-card__desc {
       font-size: 0.85rem;
@@ -1203,7 +1230,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashService: DashboardService,
     private profileService: ProfileService,
-    private auth: AuthService,
+    public auth: AuthService,
     private toast: ToastService,
     private router: Router
   ) {}

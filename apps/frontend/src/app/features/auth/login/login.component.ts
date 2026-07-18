@@ -49,11 +49,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 
         <!-- Error Banner -->
         @if (errorMsg()) {
-          <div class="auth-error animate-fade-in" role="alert">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;flex-shrink:0;">
+          <div class="auth-error animate-fade-in" role="alert" style="align-items: flex-start; gap: 12px; padding: 16px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:20px;height:20px;flex-shrink:0;margin-top:2px;">
               <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
             </svg>
-            {{ errorMsg() }}
+            <div style="flex: 1;">
+              <p style="margin: 0 0 8px 0; font-weight: 500;">{{ errorMsg() }}</p>
+              @if (showDemoFallback()) {
+                <button type="button" class="btn-demo-trigger" (click)="startDemoMode()">
+                  Explore in Demo Mode (Mock Data) →
+                </button>
+              }
+            </div>
           </div>
         }
 
@@ -412,6 +419,7 @@ export class LoginComponent {
   loading   = signal(false);
   errorMsg  = signal('');
   showPassword = signal(false);
+  showDemoFallback = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -434,6 +442,12 @@ export class LoginComponent {
     this.showPassword.update((v) => !v);
   }
 
+  startDemoMode(): void {
+    this.auth.enableDemoMode();
+    this.toast.success('Demo Mode activated! Explore fully with mock data.');
+    this.router.navigate(['/dashboard']);
+  }
+
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -443,6 +457,7 @@ export class LoginComponent {
 
     this.loading.set(true);
     this.errorMsg.set('');
+    this.showDemoFallback.set(false);
 
     this.auth.login(this.form.value).subscribe({
       next: (res) => {
@@ -457,6 +472,7 @@ export class LoginComponent {
           msg = 'Invalid email or password. Please try again.';
         } else if (err.status === 0) {
           msg = 'Cannot connect to server. Make sure the backend is running.';
+          this.showDemoFallback.set(true);
         } else {
           msg = err.error?.message || msg;
         }

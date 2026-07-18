@@ -654,12 +654,12 @@ const EMP_TYPES = [
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #475569;
+      color: #94a3b8;
     }
 
     .filter-hint {
       font-size: 0.72rem;
-      color: #334155;
+      color: #64748b;
       margin: 0;
     }
 
@@ -696,7 +696,7 @@ const EMP_TYPES = [
       font-weight: 500;
       border: 1px solid rgba(255,255,255,0.08);
       background: rgba(255,255,255,0.03);
-      color: #64748b;
+      color: #cbd5e1;
       cursor: pointer;
       transition: all 0.18s;
       font-family: var(--font-sans);
@@ -865,14 +865,14 @@ const EMP_TYPES = [
       font-weight: 500;
       border: 1px solid rgba(255,255,255,0.08);
       background: rgba(255,255,255,0.04);
-      color: #64748b;
+      color: #cbd5e1;
     }
 
     .job-tag--location { color: #94a3b8; }
 
     .job-tag--remote-remote  { color: #22d3ee; border-color: rgba(34,211,238,0.2); background: rgba(34,211,238,0.06); }
     .job-tag--remote-hybrid  { color: #a855f7; border-color: rgba(168,85,247,0.2); background: rgba(168,85,247,0.06); }
-    .job-tag--remote-onsite  { color: #64748b; }
+    .job-tag--remote-onsite  { color: #94a3b8; }
 
     .job-tag--emp   { color: #94a3b8; }
     .job-tag--visa  { color: #22c55e; border-color: rgba(34,197,94,0.2); background: rgba(34,197,94,0.06); }
@@ -965,7 +965,7 @@ const EMP_TYPES = [
     /* ── Description ── */
     .job-card__desc {
       font-size: 0.85rem;
-      color: #64748b;
+      color: #cbd5e1;
       margin: 0 0 16px;
       line-height: 1.5;
       display: -webkit-box;
@@ -992,7 +992,7 @@ const EMP_TYPES = [
       font-weight: 500;
       border: 1px solid rgba(255,255,255,0.07);
       background: rgba(255,255,255,0.03);
-      color: #475569;
+      color: #cbd5e1;
     }
 
     .job-skill-pill--matched {
@@ -1050,7 +1050,7 @@ const EMP_TYPES = [
     .score-factor__label {
       font-size: 0.68rem;
       font-weight: 600;
-      color: #475569;
+      color: #94a3b8;
       width: 28px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -1072,7 +1072,7 @@ const EMP_TYPES = [
 
     .score-factor__val {
       font-size: 0.68rem;
-      color: #475569;
+      color: #cbd5e1;
       width: 30px;
       text-align: right;
     }

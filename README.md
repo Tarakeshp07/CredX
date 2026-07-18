@@ -494,13 +494,10 @@ CredX/                              ← Monorepo root
 │       └── scoring/
 │           └── rule_engine.py      ← Python mirror of ScoringService.java
 │
-├── docs/
-│   ├── Project_Status.md
-│   ├── Smart_Job_Matching_Report.md
-│   └── Smart_Job_Matching_Dashboard_Technical_Analysis.md
-│
-└── legacy/
-    └── nest-backend/               ← Original NestJS prototype (deprecated)
+└── docs/
+    ├── Project_Status.md
+    ├── Smart_Job_Matching_Report.md
+    └── Smart_Job_Matching_Dashboard_Technical_Analysis.md
 ```
 
 ---
@@ -864,14 +861,14 @@ Step 7 — Login as Recruiter
 
 ## 🤔 Design Decisions
 
-### Decision 1: Why Spring Boot over NestJS?
+### Decision 1: Why Spring Boot (Java 21)?
 
-The project has a `legacy/nest-backend/` directory — we started there and switched. The reasons:
+Spring Boot was the deliberate, first-choice framework for this project. Key reasons:
 
-- **Stronger ORM story:** Hibernate + JPA handles complex M-N relationships (user↔skills, job↔skills) with better performance tuning options than Prisma
-- **Spring Security:** Production-grade, deeply integrated, opinionated — exactly what you want for auth
-- **Java 21 Virtual Threads:** Ready for high concurrency without reactive programming complexity
-- **Static typing throughout:** Compile-time safety for the scoring formula — a runtime error in scoring is a critical bug
+- **Stronger ORM story:** Hibernate + JPA handles complex M-N relationships (user↔skills, job↔skills) with declarative fetch strategies and composite indexes — exactly what a skill-matching schema demands
+- **Spring Security:** Production-grade, deeply integrated authentication + RBAC — zero boilerplate to wire JWT + role guards across controllers
+- **Java 21 Virtual Threads (Project Loom):** Concurrency without reactive complexity — each scoring request gets a lightweight virtual thread
+- **Static typing throughout:** Compile-time safety for the scoring formula — a miscalculation in weights is caught at build time, not at demo time
 
 ### Decision 2: Why separate the AI service into Python?
 

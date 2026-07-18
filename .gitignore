@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.next/
+*.log
+.env
+.env.local
+apps/backend/prisma/*.db
+apps/backend/prisma/*.db-journal
+apps/backend/uploads/

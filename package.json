@@ -1,0 +1,19 @@
+{
+  "name": "credx-job-matching-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CredX Hiring Hackathon 2.0 — Smart Job Matching Dashboard",
+  "scripts": {
+    "dev:backend": "npm run dev --prefix apps/backend",
+    "dev:frontend": "npm run dev --prefix apps/frontend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" --names \"BE,FE\" --prefix-colors \"blue,green\"",
+    "build:backend": "npm run build --prefix apps/backend",
+    "build:frontend": "npm run build --prefix apps/frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "install:all": "npm install && npm install --prefix apps/backend && npm install --prefix apps/frontend",
+    "db:setup": "npm run db:setup --prefix apps/backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

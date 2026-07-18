@@ -1,0 +1,176 @@
+// CredX Smart Job Matching Dashboard — Prisma schema.
+// SQLite for zero-setup local runs. To move to Postgres: change `provider` to
+// "postgresql" and set DATABASE_URL — the models are portable as-is.
+// JSON-shaped data (synonyms, score breakdown) is stored as String to stay
+// compatible across SQLite/Postgres; it is parsed in code.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Authorization roles. Stable ids: 1=ADMIN, 2=RECRUITER, 3=STUDENT.
+/// The permission matrix lives in code (common/rbac), not the DB.
+model RoleMaster {
+  id       Int    @id
+  roleName String @unique
+  users    User[]
+
+  @@map("roles")
+}
+
+/// A User is the account. Students fill the profile fields; recruiters/admins
+/// leave them null. roleId is the ONLY authorization field.
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String // bcrypt hash
+  firstName String     @default("")
+  lastName  String     @default("")
+  phone     String     @default("")
+  roleId    Int        @default(3)
+  role      RoleMaster @relation(fields: [roleId], references: [id])
+
+  // ---- Student profile fields (matching signal) ----
+  gpa              Float?
+  workAuthStatus   String  @default("UNKNOWN") // CITIZEN | PERMANENT_RESIDENT | NEEDS_SPONSORSHIP | STUDENT_VISA | UNKNOWN
+  experienceYears  Int?
+  desiredRole      String  @default("")
+  preferredLocation String @default("")
+  openToRemote     Boolean @default(true)
+  profileCompleted Boolean @default(false)
+
+  // ---- Resume (stub: file ref + raw text; parsing manual for MVP) ----
+  resumeFileRef  String?
+  resumeRawText  String?
+  resumeParsedAt DateTime?
+
+  skills       StudentSkill[]
+  matchScores  MatchScore[]
+  applications Application[]
+  savedJobs    SavedJob[]
+  postedJobs   JobPosting[]   @relation("PostedBy")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roleId])
+  @@map("users")
+}
+
+/// Canonical skill taxonomy. `synonyms` is a comma-separated, lowercased list
+/// used by the normalizer to resolve "JS"/"ReactJS" -> canonical skill.
+model Skill {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  category String @default("")
+  synonyms String @default("") // e.g. "js,ecmascript,javascript"
+
+  students StudentSkill[]
+  jobs     JobRequiredSkill[]
+
+  @@map("skills")
+}
+
+/// M–N: which skills a student has.
+model StudentSkill {
+  userId      Int
+  skillId     Int
+  proficiency Int?  // 1..5, optional
+  user        User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill       Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([userId, skillId])
+  @@index([userId])
+  @@map("student_skills")
+}
+
+model JobPosting {
+  id              Int      @id @default(autoincrement())
+  title           String
+  description     String   @default("")
+  company         String   @default("")
+  roleType        String   @default("") // e.g. "Backend", "Data", "Frontend"
+  employmentType  String   @default("FULL_TIME") // FULL_TIME | INTERNSHIP | PART_TIME
+  location        String   @default("")
+  remoteMode      String   @default("ONSITE") // ONSITE | REMOTE | HYBRID
+  visaSponsorship Boolean  @default(false)
+  minGpa          Float?
+  minExperience   Int      @default(0)
+  status          String   @default("ACTIVE") // ACTIVE | EXPIRED
+  expiresAt       DateTime?
+
+  postedById Int?
+  postedBy   User? @relation("PostedBy", fields: [postedById], references: [id], onDelete: SetNull)
+
+  requiredSkills JobRequiredSkill[]
+  matchScores    MatchScore[]
+  applications   Application[]
+  savedBy        SavedJob[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, remoteMode, visaSponsorship])
+  @@index([status, roleType])
+  @@map("job_postings")
+}
+
+/// M–N: skills a job requires, with a per-skill weight.
+model JobRequiredSkill {
+  jobId   Int
+  skillId Int
+  weight  Float @default(1)
+  job     JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill   Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, skillId])
+  @@index([jobId])
+  @@map("job_required_skills")
+}
+
+/// Cached Match Score per (student, job). Upserted on recompute.
+model MatchScore {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  jobId      Int
+  score      Float // normalized 0..100
+  breakdown  String   @default("{}") // JSON string: per-factor contributions + missing skills
+  computedAt DateTime @default(now())
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job        JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([jobId])
+  @@map("match_scores")
+}
+
+/// A student applying to a job (quick-win beyond the source md).
+model Application {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  jobId     Int
+  status    String   @default("APPLIED") // APPLIED | SHORTLISTED | REJECTED
+  appliedAt DateTime @default(now())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@map("applications")
+}
+
+/// Bookmarked jobs (quick-win beyond the source md).
+model SavedJob {
+  userId  Int
+  jobId   Int
+  savedAt DateTime @default(now())
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job     JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@id([userId, jobId])
+  @@map("saved_jobs")
+}

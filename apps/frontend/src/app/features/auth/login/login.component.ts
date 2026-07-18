@@ -228,7 +228,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     .auth-card__brand {
       font-size: 1.5rem;
       font-weight: 800;
-      color: #e2e8f0;
+      color: #0f172a;
       letter-spacing: -0.02em;
     }
 
@@ -241,7 +241,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     .auth-card__title {
       font-size: 1.75rem;
       font-weight: 800;
-      color: #f1f5f9;
+      color: #0f172a;
       margin: 0;
       letter-spacing: -0.02em;
     }
@@ -260,7 +260,7 @@ import { HttpErrorResponse } from '@angular/common/http';
       background: rgba(244, 63, 94, 0.08);
       border: 1px solid rgba(244, 63, 94, 0.2);
       border-radius: 10px;
-      color: #fb7185;
+      color: #e11d48;
       font-size: 0.875rem;
     }
 
@@ -284,13 +284,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 
     .auth-field__forgot {
       font-size: 0.8rem;
-      color: #7c6ff7;
+      color: #4f46e5;
       text-decoration: none;
       transition: color 0.2s;
     }
 
     .auth-field__forgot:hover {
-      color: #a5b4fc;
+      color: #3730a3;
     }
 
     .auth-field__input-wrap {
@@ -327,12 +327,12 @@ import { HttpErrorResponse } from '@angular/common/http';
     }
 
     .auth-field__eye:hover {
-      color: #94a3b8;
+      color: #0f172a;
     }
 
     .auth-field__error {
       font-size: 0.78rem;
-      color: #fb7185;
+      color: #e11d48;
       margin: 0;
     }
 
@@ -366,7 +366,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     .auth-divider__line {
       flex: 1;
       height: 1px;
-      background: rgba(255,255,255,0.06);
+      background: var(--color-surface-600);
       border: none;
     }
 
@@ -383,9 +383,9 @@ import { HttpErrorResponse } from '@angular/common/http';
     }
 
     .auth-card__link {
-      color: #a5b4fc;
+      color: #4f46e5;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       transition: color 0.2s;
     }
 
@@ -407,7 +407,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
     .auth-demo-hint code {
       background: rgba(99, 102, 241, 0.12);
-      color: #a5b4fc;
+      color: #4f46e5;
       padding: 1px 6px;
       border-radius: 4px;
       font-size: 0.75rem;

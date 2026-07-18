@@ -136,16 +136,16 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(7, 7, 15, 0.8);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid var(--color-surface-600);
     transition: box-shadow 0.3s ease;
   }
 
   .credx-nav--scrolled {
-    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
-    border-bottom-color: rgba(124, 111, 247, 0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    border-bottom-color: var(--color-surface-600);
   }
 
   .credx-nav__inner {
@@ -171,7 +171,7 @@
   .credx-nav__logo-text {
     font-size: 1.25rem;
     font-weight: 800;
-    color: #e2e8f0;
+    color: #0f172a;
     letter-spacing: -0.02em;
   }
 
@@ -190,19 +190,19 @@
     border-radius: 8px;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #94a3b8;
+    color: #475569;
     text-decoration: none;
     transition: all 0.2s ease;
   }
 
   .credx-nav__link:hover {
-    color: #e2e8f0;
-    background: rgba(255,255,255,0.05);
+    color: #4f46e5;
+    background: var(--color-surface-700);
   }
 
   .credx-nav__link--active {
-    color: #a5b4fc;
-    background: rgba(124, 111, 247, 0.1);
+    color: #4f46e5;
+    background: rgba(99, 102, 241, 0.12);
   }
 
   .credx-nav__link-icon {
@@ -240,7 +240,7 @@
   .credx-nav__username {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #cbd5e1;
+    color: #475569;
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -264,15 +264,16 @@
   }
 
   .credx-nav__hamburger:hover {
-    color: #e2e8f0;
+    color: #0f172a;
   }
 
   .credx-nav__mobile-menu {
-    border-top: 1px solid rgba(255,255,255,0.06);
+    border-top: 1px solid var(--color-surface-600);
     padding: 12px 24px 16px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    background: var(--color-surface-800);
   }
 
   .credx-nav__mobile-link {
@@ -281,7 +282,7 @@
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #94a3b8;
+    color: #475569;
     text-decoration: none;
     transition: all 0.2s;
     background: none;
@@ -293,16 +294,16 @@
 
   .credx-nav__mobile-link:hover,
   .credx-nav__mobile-link--active {
-    color: #e2e8f0;
-    background: rgba(255,255,255,0.05);
+    color: #4f46e5;
+    background: var(--color-surface-700);
   }
 
   .credx-nav__mobile-link--accent {
-    color: #a5b4fc;
+    color: #4f46e5;
   }
 
   .credx-nav__mobile-link--danger {
-    color: #f87171;
+    color: #ef4444;
   }
 
   /* Main content */
@@ -312,7 +313,7 @@
 
   /* Footer */
   .credx-footer {
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid var(--color-surface-600);
     padding: 16px 0;
     margin-top: 48px;
   }
@@ -327,7 +328,7 @@
   .credx-footer__brand {
     font-weight: 800;
     font-size: 1rem;
-    color: #e2e8f0;
+    color: #0f172a;
   }
 
   .credx-footer__tagline {
@@ -338,7 +339,7 @@
   .credx-footer__copy {
     margin-left: auto;
     font-size: 0.78rem;
-    color: #475569;
+    color: #64748b;
   }
 
   /* Responsive */

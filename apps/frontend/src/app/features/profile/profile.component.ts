@@ -481,7 +481,7 @@ const ROLE_TYPE_OPTIONS = [
     .profile-header__name {
       font-size: 1.5rem;
       font-weight: 800;
-      color: #f1f5f9;
+      color: #0f172a;
       margin: 0 0 4px;
       letter-spacing: -0.02em;
     }
@@ -500,15 +500,15 @@ const ROLE_TYPE_OPTIONS = [
       border-radius: 999px;
       font-size: 0.8rem;
       font-weight: 600;
-      background: rgba(244, 63, 94, 0.1);
-      border: 1px solid rgba(244, 63, 94, 0.2);
-      color: #fb7185;
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      color: #e11d48;
     }
 
     .profile-completion--done {
-      background: rgba(34, 197, 94, 0.1);
-      border-color: rgba(34, 197, 94, 0.2);
-      color: #4ade80;
+      background: rgba(22, 163, 74, 0.08);
+      border-color: rgba(22, 163, 74, 0.25);
+      color: #15803d;
     }
 
     /* ── Form ── */
@@ -533,19 +533,19 @@ const ROLE_TYPE_OPTIONS = [
       width: 36px;
       height: 36px;
       border-radius: 10px;
-      background: rgba(124,111,247,0.12);
-      border: 1px solid rgba(124,111,247,0.2);
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #a5b4fc;
+      color: #4f46e5;
       flex-shrink: 0;
     }
 
     .profile-section__title {
       font-size: 1.1rem;
       font-weight: 700;
-      color: #e2e8f0;
+      color: #0f172a;
       margin: 0 0 2px;
       letter-spacing: -0.01em;
     }
@@ -580,7 +580,7 @@ const ROLE_TYPE_OPTIONS = [
 
     .field-error {
       font-size: 0.75rem;
-      color: #fb7185;
+      color: #e11d48;
       margin: 0;
     }
 
@@ -612,18 +612,18 @@ const ROLE_TYPE_OPTIONS = [
       display: flex;
       align-items: center;
       gap: 0;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid var(--color-surface-600);
       border-radius: 10px;
       overflow: hidden;
-      background: var(--color-surface-700, #13132a);
+      background: #ffffff;
     }
 
     .stepper__btn {
       width: 44px;
       height: 44px;
-      background: rgba(124,111,247,0.08);
+      background: var(--color-surface-700);
       border: none;
-      color: #94a3b8;
+      color: #64748b;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -633,8 +633,8 @@ const ROLE_TYPE_OPTIONS = [
     }
 
     .stepper__btn:hover:not(:disabled) {
-      background: rgba(124,111,247,0.2);
-      color: #a5b4fc;
+      background: rgba(99,102,241,0.12);
+      color: #4f46e5;
     }
 
     .stepper__btn:disabled {
@@ -647,11 +647,11 @@ const ROLE_TYPE_OPTIONS = [
       text-align: center;
       border: none;
       border-radius: 0;
-      border-left: 1px solid rgba(255,255,255,0.06);
-      border-right: 1px solid rgba(255,255,255,0.06);
+      border-left: 1px solid var(--color-surface-600);
+      border-right: 1px solid var(--color-surface-600);
       font-size: 1.1rem;
       font-weight: 700;
-      color: #e2e8f0;
+      color: #0f172a;
       background: transparent;
       cursor: default;
     }
@@ -665,10 +665,10 @@ const ROLE_TYPE_OPTIONS = [
 
     .work-auth-btn {
       padding: 10px 14px;
-      background: rgba(13, 13, 26, 0.5);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #ffffff;
+      border: 1px solid var(--color-surface-600);
       border-radius: 10px;
-      color: #64748b;
+      color: #475569;
       font-family: var(--font-sans);
       font-size: 0.85rem;
       font-weight: 500;
@@ -678,14 +678,16 @@ const ROLE_TYPE_OPTIONS = [
     }
 
     .work-auth-btn:hover {
-      border-color: rgba(124,111,247,0.3);
-      color: #94a3b8;
+      border-color: rgba(99,102,241,0.4);
+      color: #4f46e5;
+      background: rgba(99,102,241,0.04);
     }
 
     .work-auth-btn--active {
-      background: rgba(124,111,247,0.12);
-      border-color: rgba(124,111,247,0.5);
-      color: #a5b4fc;
+      background: rgba(99,102,241,0.1);
+      border-color: #6366f1;
+      color: #4f46e5;
+      font-weight: 600;
     }
 
     /* Form select */
@@ -700,8 +702,8 @@ const ROLE_TYPE_OPTIONS = [
     }
 
     .form-select option {
-      background: #13132a;
-      color: #e2e8f0;
+      background: #ffffff;
+      color: #0f172a;
     }
 
     /* Toggle */
@@ -718,17 +720,17 @@ const ROLE_TYPE_OPTIONS = [
       width: 48px;
       height: 26px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--color-surface-500);
+      border: 1px solid var(--color-surface-500);
       cursor: pointer;
       transition: all 0.25s ease;
       flex-shrink: 0;
     }
 
     .toggle--on {
-      background: linear-gradient(135deg, #7c6ff7, #a855f7);
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       border-color: transparent;
-      box-shadow: 0 0 12px rgba(124,111,247,0.4);
+      box-shadow: 0 2px 8px rgba(99,102,241,0.35);
     }
 
     .toggle__thumb {
@@ -785,7 +787,7 @@ const ROLE_TYPE_OPTIONS = [
       transition: color 0.2s;
     }
 
-    .skill-search-clear:hover { color: #94a3b8; }
+    .skill-search-clear:hover { color: #0f172a; }
 
     .selected-skills {
       margin-bottom: 16px;
@@ -834,29 +836,30 @@ const ROLE_TYPE_OPTIONS = [
       font-size: 0.82rem;
       font-weight: 500;
       cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #64748b;
+      border: 1px solid var(--color-surface-600);
+      background: #ffffff;
+      color: #475569;
       transition: all 0.18s ease;
       font-family: var(--font-sans);
     }
 
     .skill-pill:hover {
-      border-color: rgba(124,111,247,0.35);
-      color: #94a3b8;
-      background: rgba(124,111,247,0.06);
+      border-color: rgba(99,102,241,0.4);
+      color: #4f46e5;
+      background: rgba(99,102,241,0.05);
     }
 
     .skill-pill--selected {
-      background: rgba(124,111,247,0.15);
-      border-color: rgba(124,111,247,0.5);
-      color: #a5b4fc;
+      background: rgba(99,102,241,0.12);
+      border-color: #6366f1;
+      color: #4f46e5;
+      font-weight: 600;
     }
 
     .skill-pill__remove {
       background: none;
       border: none;
-      color: #7c6ff7;
+      color: #4f46e5;
       cursor: pointer;
       padding: 0;
       display: flex;
@@ -903,10 +906,10 @@ const ROLE_TYPE_OPTIONS = [
       align-items: center;
       gap: 8px;
       padding: 10px 14px;
-      background: rgba(34,197,94,0.08);
-      border: 1px solid rgba(34,197,94,0.2);
+      background: rgba(22,163,74,0.08);
+      border: 1px solid rgba(22,163,74,0.25);
       border-radius: 8px;
-      color: #4ade80;
+      color: #15803d;
       font-size: 0.85rem;
       margin-bottom: 12px;
     }
@@ -919,7 +922,7 @@ const ROLE_TYPE_OPTIONS = [
       background: rgba(244,63,94,0.08);
       border: 1px solid rgba(244,63,94,0.2);
       border-radius: 8px;
-      color: #fb7185;
+      color: #e11d48;
       font-size: 0.85rem;
       margin-bottom: 12px;
     }

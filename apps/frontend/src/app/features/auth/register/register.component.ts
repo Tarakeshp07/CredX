@@ -317,7 +317,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     .auth-card__brand {
       font-size: 1.5rem;
       font-weight: 800;
-      color: #e2e8f0;
+      color: #0f172a;
       letter-spacing: -0.02em;
     }
 
@@ -330,7 +330,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     .auth-card__title {
       font-size: 1.75rem;
       font-weight: 800;
-      color: #f1f5f9;
+      color: #0f172a;
       margin: 0;
       letter-spacing: -0.02em;
     }
@@ -349,7 +349,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
       background: rgba(244, 63, 94, 0.08);
       border: 1px solid rgba(244, 63, 94, 0.2);
       border-radius: 10px;
-      color: #fb7185;
+      color: #e11d48;
       font-size: 0.875rem;
     }
 
@@ -405,12 +405,12 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     }
 
     .auth-field__eye:hover {
-      color: #94a3b8;
+      color: #0f172a;
     }
 
     .auth-field__error {
       font-size: 0.78rem;
-      color: #fb7185;
+      color: #e11d48;
       margin: 0;
     }
 
@@ -427,10 +427,10 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
       justify-content: center;
       gap: 8px;
       padding: 12px;
-      background: rgba(13, 13, 26, 0.5);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #ffffff;
+      border: 1px solid var(--color-surface-600);
       border-radius: 10px;
-      color: #64748b;
+      color: #475569;
       font-family: var(--font-sans);
       font-size: 0.9rem;
       font-weight: 500;
@@ -439,15 +439,17 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     }
 
     .role-btn:hover {
-      border-color: rgba(124,111,247,0.3);
-      color: #94a3b8;
+      border-color: rgba(99,102,241,0.4);
+      color: #4f46e5;
+      background: rgba(99,102,241,0.04);
     }
 
     .role-btn--active {
-      background: rgba(124,111,247,0.12);
-      border-color: rgba(124,111,247,0.5);
-      color: #a5b4fc;
-      box-shadow: 0 0 12px rgba(124,111,247,0.15);
+      background: rgba(99,102,241,0.1);
+      border-color: #6366f1;
+      color: #4f46e5;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(99,102,241,0.15);
     }
 
     /* Password Strength */
@@ -468,7 +470,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
       flex: 1;
       height: 3px;
       border-radius: 2px;
-      background: rgba(255,255,255,0.08);
+      background: var(--color-surface-600);
       transition: background 0.3s ease;
     }
 
@@ -507,9 +509,9 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     }
 
     .auth-card__link {
-      color: #a5b4fc;
+      color: #4f46e5;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       transition: color 0.2s;
     }
 

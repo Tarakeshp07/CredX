@@ -101,7 +101,7 @@ const EMP_TYPES = [
       <!-- ══ Filter Panel (sidebar) ═══════════════════════════════ -->
       <aside class="dash-filters glass animate-fade-in-up" style="animation-delay:0.05s">
         <div class="dash-filters__head">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;color:#7c6ff7">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;color:#6366f1">
             <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
           </svg>
           <span>Filters</span>
@@ -216,7 +216,7 @@ const EMP_TYPES = [
           <!-- Error state -->
           <div class="dash-empty glass animate-fade-in">
             <div class="dash-empty__icon" style="background:rgba(244,63,94,0.1);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#fb7185;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#e11d48;">
                 <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/>
               </svg>
             </div>
@@ -228,7 +228,7 @@ const EMP_TYPES = [
           <!-- Empty state -->
           <div class="dash-empty glass animate-fade-in">
             <div class="dash-empty__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#7c6ff7;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px;color:#6366f1;">
                 <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd"/>
               </svg>
             </div>
@@ -370,7 +370,7 @@ const EMP_TYPES = [
                     <div class="score-factor">
                       <span class="score-factor__label">Skills</span>
                       <div class="score-factor__bar-wrap">
-                        <div class="score-factor__bar" [style.width]="skillFactor(item) + '%'" style="background:#7c6ff7;"></div>
+                        <div class="score-factor__bar" [style.width]="skillFactor(item) + '%'" style="background:#6366f1;"></div>
                       </div>
                       <span class="score-factor__val">{{ skillFactor(item) | number:'1.0-0' }}%</span>
                     </div>
@@ -452,7 +452,7 @@ const EMP_TYPES = [
     .profile-warning__icon {
       width: 24px;
       height: 24px;
-      color: #fbbf24;
+      color: #d97706;
       flex-shrink: 0;
     }
 
@@ -463,13 +463,13 @@ const EMP_TYPES = [
     .profile-warning__title {
       font-size: 0.95rem;
       font-weight: 700;
-      color: #fbbf24;
+      color: #b45309;
       margin: 0 0 2px;
     }
 
     .profile-warning__text {
       font-size: 0.85rem;
-      color: #94a3b8;
+      color: #78350f;
       margin: 0;
     }
 
@@ -528,7 +528,7 @@ const EMP_TYPES = [
     .dash-header__title {
       font-size: 2rem;
       font-weight: 800;
-      color: #f1f5f9;
+      color: #0f172a;
       margin: 0 0 6px;
       letter-spacing: -0.03em;
     }
@@ -540,13 +540,13 @@ const EMP_TYPES = [
     }
 
     .dash-link {
-      color: #7c6ff7;
+      color: #4f46e5;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       transition: color 0.2s;
     }
 
-    .dash-link:hover { color: #a5b4fc; }
+    .dash-link:hover { color: #3730a3; }
 
     .dash-header__right {
       display: flex;
@@ -564,7 +564,7 @@ const EMP_TYPES = [
     .dash-count__num {
       font-size: 2rem;
       font-weight: 800;
-      color: #a5b4fc;
+      color: #4f46e5;
       letter-spacing: -0.04em;
     }
 
@@ -576,8 +576,8 @@ const EMP_TYPES = [
     /* Sort */
     .dash-sort {
       display: flex;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
+      background: var(--color-surface-700);
+      border: 1px solid var(--color-surface-600);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -594,11 +594,11 @@ const EMP_TYPES = [
       transition: all 0.2s;
     }
 
-    .dash-sort__btn:hover { color: #94a3b8; }
+    .dash-sort__btn:hover { color: #0f172a; }
 
     .dash-sort__btn--active {
-      background: rgba(124,111,247,0.15);
-      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      color: #4f46e5;
     }
 
     /* ── Body Layout ── */
@@ -625,23 +625,23 @@ const EMP_TYPES = [
       gap: 8px;
       font-size: 0.875rem;
       font-weight: 700;
-      color: #94a3b8;
+      color: #334155;
     }
 
     .dash-filters__clear {
       margin-left: auto;
       background: none;
       border: none;
-      color: #7c6ff7;
+      color: #4f46e5;
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       font-family: var(--font-sans);
       padding: 0;
       transition: color 0.2s;
     }
 
-    .dash-filters__clear:hover { color: #a5b4fc; }
+    .dash-filters__clear:hover { color: #3730a3; text-decoration: underline; }
 
     .filter-group {
       display: flex;
@@ -654,12 +654,12 @@ const EMP_TYPES = [
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #94a3b8;
+      color: #64748b;
     }
 
     .filter-hint {
       font-size: 0.72rem;
-      color: #64748b;
+      color: #94a3b8;
       margin: 0;
     }
 
@@ -690,27 +690,29 @@ const EMP_TYPES = [
     }
 
     .filter-chip {
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      color: #cbd5e1;
+      border: 1px solid var(--color-surface-600);
+      background: #ffffff;
+      color: #475569;
       cursor: pointer;
       transition: all 0.18s;
       font-family: var(--font-sans);
     }
 
     .filter-chip:hover {
-      border-color: rgba(124,111,247,0.35);
-      color: #94a3b8;
+      border-color: rgba(99,102,241,0.45);
+      color: #4f46e5;
+      background: rgba(99,102,241,0.05);
     }
 
     .filter-chip--active {
-      background: rgba(124,111,247,0.15);
-      border-color: rgba(124,111,247,0.5);
-      color: #a5b4fc;
+      background: rgba(99,102,241,0.12);
+      border-color: #6366f1;
+      color: #4f46e5;
+      font-weight: 600;
     }
 
     .filter-toggle-row {
@@ -726,17 +728,17 @@ const EMP_TYPES = [
       width: 44px;
       height: 24px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--color-surface-500);
+      border: 1px solid var(--color-surface-500);
       cursor: pointer;
       transition: all 0.25s;
       flex-shrink: 0;
     }
 
     .toggle--on {
-      background: linear-gradient(135deg, #7c6ff7, #a855f7);
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       border-color: transparent;
-      box-shadow: 0 0 10px rgba(124,111,247,0.4);
+      box-shadow: 0 2px 8px rgba(99,102,241,0.35);
     }
 
     .toggle__thumb {
@@ -770,13 +772,13 @@ const EMP_TYPES = [
     }
 
     .job-card:hover {
-      border-color: rgba(124,111,247,0.2);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(124,111,247,0.1);
+      border-color: rgba(99,102,241,0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(15,23,42,0.08), 0 0 0 1px rgba(99,102,241,0.08);
     }
 
     .job-card--applied {
-      border-color: rgba(34,197,94,0.15);
+      border-color: rgba(22,163,74,0.3);
     }
 
     .job-card--skeleton {
@@ -800,14 +802,14 @@ const EMP_TYPES = [
       width: 48px;
       height: 48px;
       border-radius: 12px;
-      background: linear-gradient(135deg, rgba(124,111,247,0.15), rgba(168,85,247,0.1));
-      border: 1px solid rgba(124,111,247,0.2);
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.25rem;
       font-weight: 800;
-      color: #a5b4fc;
+      color: #4f46e5;
       flex-shrink: 0;
     }
 
@@ -824,7 +826,7 @@ const EMP_TYPES = [
     .job-card__title {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #f1f5f9;
+      color: #0f172a;
       margin: 0;
       letter-spacing: -0.01em;
     }
@@ -837,14 +839,14 @@ const EMP_TYPES = [
       border-radius: 999px;
       font-size: 0.7rem;
       font-weight: 600;
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.25);
-      color: #4ade80;
+      background: rgba(22,163,74,0.1);
+      border: 1px solid rgba(22,163,74,0.25);
+      color: #15803d;
     }
 
     .job-card__company {
       font-size: 0.85rem;
-      color: #7c6ff7;
+      color: #4f46e5;
       font-weight: 600;
       margin: 0 0 10px;
     }
@@ -863,20 +865,20 @@ const EMP_TYPES = [
       border-radius: 999px;
       font-size: 0.72rem;
       font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #cbd5e1;
+      border: 1px solid var(--color-surface-600);
+      background: var(--color-surface-700);
+      color: #475569;
     }
 
-    .job-tag--location { color: #94a3b8; }
+    .job-tag--location { color: #64748b; }
 
-    .job-tag--remote-remote  { color: #22d3ee; border-color: rgba(34,211,238,0.2); background: rgba(34,211,238,0.06); }
-    .job-tag--remote-hybrid  { color: #a855f7; border-color: rgba(168,85,247,0.2); background: rgba(168,85,247,0.06); }
-    .job-tag--remote-onsite  { color: #94a3b8; }
+    .job-tag--remote-remote  { color: #0e7490; border-color: rgba(6,182,212,0.3);  background: rgba(6,182,212,0.08); }
+    .job-tag--remote-hybrid  { color: #7e22ce; border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.08); }
+    .job-tag--remote-onsite  { color: #64748b; }
 
-    .job-tag--emp   { color: #94a3b8; }
-    .job-tag--visa  { color: #22c55e; border-color: rgba(34,197,94,0.2); background: rgba(34,197,94,0.06); }
-    .job-tag--gpa   { color: #f59e0b; border-color: rgba(245,158,11,0.2); background: rgba(245,158,11,0.06); }
+    .job-tag--emp   { color: #64748b; }
+    .job-tag--visa  { color: #15803d; border-color: rgba(22,163,74,0.3);  background: rgba(22,163,74,0.08); }
+    .job-tag--gpa   { color: #b45309; border-color: rgba(217,119,6,0.3);  background: rgba(217,119,6,0.08); }
 
     /* ── Score Ring ── */
     .score-ring-wrap {
@@ -890,11 +892,11 @@ const EMP_TYPES = [
     .score-ring {
       width: 72px;
       height: 72px;
-      filter: drop-shadow(0 0 8px rgba(124,111,247,0.25));
+      filter: drop-shadow(0 2px 6px rgba(99,102,241,0.15));
     }
 
     .score-ring__track {
-      stroke: rgba(255,255,255,0.06);
+      stroke: var(--color-surface-600);
     }
 
     .score-ring__fill {
@@ -923,14 +925,14 @@ const EMP_TYPES = [
     .score-ring__num {
       font-size: 1.05rem;
       font-weight: 800;
-      color: #f1f5f9;
+      color: #0f172a;
       line-height: 1;
     }
 
     .score-ring__pct {
       font-size: 0.6rem;
       font-weight: 600;
-      color: #94a3b8;
+      color: #475569;
     }
 
     .score-band {
@@ -943,9 +945,9 @@ const EMP_TYPES = [
     }
 
     /* Band colours */
-    .band-strong { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
-    .band-good   { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
-    .band-fair   { background: rgba(100,116,139,0.2); color: #94a3b8; border: 1px solid rgba(100,116,139,0.2); }
+    .band-strong { background: rgba(22,163,74,0.1);   color: #15803d; border: 1px solid rgba(22,163,74,0.25); }
+    .band-good   { background: rgba(217,119,6,0.1);   color: #b45309; border: 1px solid rgba(217,119,6,0.25); }
+    .band-fair   { background: rgba(100,116,139,0.1); color: #475569; border: 1px solid rgba(100,116,139,0.2); }
 
     .mobile-score-badge {
       display: none;
@@ -965,7 +967,7 @@ const EMP_TYPES = [
     /* ── Description ── */
     .job-card__desc {
       font-size: 0.85rem;
-      color: #cbd5e1;
+      color: #64748b;
       margin: 0 0 16px;
       line-height: 1.5;
       display: -webkit-box;
@@ -990,15 +992,16 @@ const EMP_TYPES = [
       border-radius: 999px;
       font-size: 0.72rem;
       font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.03);
-      color: #cbd5e1;
+      border: 1px solid var(--color-surface-600);
+      background: var(--color-surface-700);
+      color: #64748b;
     }
 
     .job-skill-pill--matched {
-      background: rgba(124,111,247,0.1);
-      border-color: rgba(124,111,247,0.3);
-      color: #a5b4fc;
+      background: rgba(99,102,241,0.1);
+      border-color: rgba(99,102,241,0.35);
+      color: #4f46e5;
+      font-weight: 600;
     }
 
     /* ── Missing Skills ── */
@@ -1007,17 +1010,17 @@ const EMP_TYPES = [
       align-items: flex-start;
       gap: 8px;
       padding: 10px 14px;
-      background: rgba(245,158,11,0.06);
-      border: 1px solid rgba(245,158,11,0.15);
+      background: rgba(217, 119, 6, 0.08);
+      border: 1px solid rgba(217, 119, 6, 0.2);
       border-radius: 10px;
       font-size: 0.8rem;
-      color: #94a3b8;
+      color: #78350f;
       margin-bottom: 16px;
       line-height: 1.5;
     }
 
     .missing-skills strong {
-      color: #fbbf24;
+      color: #b45309;
       font-weight: 600;
     }
 
@@ -1027,7 +1030,7 @@ const EMP_TYPES = [
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid var(--color-surface-600);
       padding-top: 16px;
       flex-wrap: wrap;
     }
@@ -1050,7 +1053,7 @@ const EMP_TYPES = [
     .score-factor__label {
       font-size: 0.68rem;
       font-weight: 600;
-      color: #94a3b8;
+      color: #64748b;
       width: 28px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -1058,8 +1061,8 @@ const EMP_TYPES = [
 
     .score-factor__bar-wrap {
       flex: 1;
-      height: 3px;
-      background: rgba(255,255,255,0.06);
+      height: 4px;
+      background: var(--color-surface-600);
       border-radius: 2px;
       overflow: hidden;
     }
@@ -1072,7 +1075,8 @@ const EMP_TYPES = [
 
     .score-factor__val {
       font-size: 0.68rem;
-      color: #cbd5e1;
+      font-weight: 600;
+      color: #475569;
       width: 30px;
       text-align: right;
     }
@@ -1090,28 +1094,28 @@ const EMP_TYPES = [
       cursor: pointer;
       transition: all 0.2s;
       white-space: nowrap;
-      background: linear-gradient(135deg, #7c6ff7, #a855f7);
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
       border: none;
       color: #fff;
-      box-shadow: 0 4px 12px rgba(124,111,247,0.3);
+      box-shadow: 0 4px 12px rgba(99,102,241,0.25);
     }
 
     .apply-btn:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(124,111,247,0.45);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.4);
     }
 
     .apply-btn--applied {
-      background: rgba(100,116,139,0.15);
-      border: 1px solid rgba(100,116,139,0.25);
-      color: #94a3b8;
+      background: var(--color-surface-700);
+      border: 1px solid var(--color-surface-500);
+      color: #64748b;
       box-shadow: none;
     }
 
     .apply-btn--applied:hover:not(:disabled) {
-      background: rgba(244,63,94,0.1);
-      border-color: rgba(244,63,94,0.3);
-      color: #fb7185;
+      background: rgba(244,63,94,0.08);
+      border-color: rgba(244,63,94,0.35);
+      color: #e11d48;
       box-shadow: none;
       transform: none;
     }
@@ -1143,7 +1147,7 @@ const EMP_TYPES = [
       width: 60px;
       height: 60px;
       border-radius: 16px;
-      background: rgba(124,111,247,0.1);
+      background: rgba(99,102,241,0.1);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1152,7 +1156,7 @@ const EMP_TYPES = [
     .dash-empty__title {
       font-size: 1.1rem;
       font-weight: 700;
-      color: #e2e8f0;
+      color: #0f172a;
       margin: 0;
     }
 

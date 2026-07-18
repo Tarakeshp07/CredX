@@ -35,6 +35,7 @@ export interface RegisterRequest {
 // ── Storage Keys ──────────────────────────────────────────────────────────────
 const TOKEN_KEY = 'credx_token';
 const USER_KEY  = 'credx_user';
+const DEMO_KEY  = 'credx_demo';
 
 export const API_BASE = 'http://localhost:8080';
 
@@ -44,6 +45,7 @@ export const API_BASE = 'http://localhost:8080';
 export class AuthService {
   private _token = signal<string | null>(this.loadToken());
   private _user  = signal<UserSummary | null>(this.loadUser());
+  readonly isDemoMode = signal<boolean>(localStorage.getItem(DEMO_KEY) === 'true');
 
   /** Reactive state — use these in components via computed() or directly */
   readonly isLoggedIn  = computed(() => !!this._token());
@@ -54,13 +56,63 @@ export class AuthService {
 
   // ── Auth API calls ──────────────────────────────────────────────────────────
 
+  enableDemoMode(): void {
+    localStorage.setItem(DEMO_KEY, 'true');
+    this.isDemoMode.set(true);
+    const demoRes: AuthResponse = {
+      accessToken: 'dummy-demo-token-12345',
+      user: {
+        id: 9999,
+        email: 'student@credx.dev',
+        role: 'STUDENT',
+        firstName: 'Sam (Demo)',
+        lastName: 'Student'
+      }
+    };
+    this.persist(demoRes);
+  }
+
   login(credentials: LoginRequest): Observable<AuthResponse> {
+    if (this.isDemoMode()) {
+      return new Observable<AuthResponse>((sub) => {
+        const res: AuthResponse = {
+          accessToken: 'dummy-demo-token-12345',
+          user: {
+            id: 9999,
+            email: credentials.email || 'student@credx.dev',
+            role: 'STUDENT',
+            firstName: 'Sam (Demo)',
+            lastName: 'Student'
+          }
+        };
+        this.persist(res);
+        sub.next(res);
+        sub.complete();
+      });
+    }
     return this.http
       .post<AuthResponse>(`${API_BASE}/auth/login`, credentials)
       .pipe(tap((res) => this.persist(res)));
   }
 
   register(data: RegisterRequest): Observable<AuthResponse> {
+    if (this.isDemoMode()) {
+      return new Observable<AuthResponse>((sub) => {
+        const res: AuthResponse = {
+          accessToken: 'dummy-demo-token-12345',
+          user: {
+            id: 9999,
+            email: data.email,
+            role: data.role || 'STUDENT',
+            firstName: data.firstName,
+            lastName: data.lastName
+          }
+        };
+        this.persist(res);
+        sub.next(res);
+        sub.complete();
+      });
+    }
     return this.http
       .post<AuthResponse>(`${API_BASE}/auth/register`, data)
       .pipe(tap((res) => this.persist(res)));
@@ -69,8 +121,10 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(DEMO_KEY);
     this._token.set(null);
     this._user.set(null);
+    this.isDemoMode.set(false);
     this.router.navigate(['/login']);
   }
 

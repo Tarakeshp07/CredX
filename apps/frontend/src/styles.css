@@ -314,6 +314,57 @@ body {
   margin: 0;
 }
 
+/* ── Typography & Header Overrides ── */
+h1, h2, h3, h4, h5, h6, button, input, select, textarea {
+  font-family: var(--font-sans) !important;
+}
+
+/* ── Demo Mode UI Banners ── */
+.demo-banner {
+  background: linear-gradient(90deg, rgba(124, 111, 247, 0.15) 0%, rgba(34, 211, 238, 0.15) 100%);
+  border-bottom: 1px solid rgba(124, 111, 247, 0.3);
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #c4b5fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 1000;
+  position: relative;
+}
+
+.demo-banner__badge {
+  background: rgba(124, 111, 247, 0.3);
+  border: 1px solid #7c6ff7;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.btn-demo-trigger {
+  margin-top: 10px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.2) 0%, rgba(124, 111, 247, 0.2) 100%);
+  border: 1px solid rgba(124, 111, 247, 0.4);
+  color: #22d3ee;
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-demo-trigger:hover {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.35) 0%, rgba(124, 111, 247, 0.35) 100%);
+  border-color: #22d3ee;
+  transform: translateY(-1px);
+}
+
 /* ── Noise Overlay (subtle texture) ── */
 .noise::after {
   content: '';

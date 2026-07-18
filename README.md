@@ -10,7 +10,9 @@
  ╚██████╗██║  ██║███████╗██████╔╝██╔╝ ██╗
   ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝  ╚═╝
 ```
+## 🎥 Demo Video
 
+[▶️ Watch Demo](https://drive.google.com/file/d/1PLmSMAXh5HHJTy_OEYcoBtVNHLa_WX_A/view?usp=sharing)
 # CredX — Smart Job Matching Dashboard
 
 ### *CredX Hiring Hackathon 2.0 · Problem Statement 1*

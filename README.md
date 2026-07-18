@@ -265,18 +265,24 @@ if student.workAuthStatus in [NEEDS_SPONSORSHIP, STUDENT_VISA]
 
 For every job that passes the hard filter, the `ScoringService` computes:
 
-```
-╔══════════════════════════════════════════════════════════════════════╗
-║                    CREDX MATCH SCORE FORMULA                         ║
-╠══════════════════════════════════════════════════════════════════════╣
-║                                                                      ║
-║  score = 100 × (                                                     ║
-║      0.60 × skillOverlapRatio                                        ║
-║    + 0.20 × gpaSatisfaction                                          ║
-║    + 0.15 × experienceFit                                            ║
-║    + 0.05 × remoteFit                                                ║
-║  )                                                                   ║
-╚══════════════════════════════════════════════════════════════════════╝
+```mermaid
+flowchart LR
+    A["Job passed\nhard filter ✅"] --> B["Skill Overlap\n|matched| ÷ |required|"]
+    A --> C["GPA Satisfaction\nstudent.gpa ≥ job.minGpa"]
+    A --> D["Experience Fit\nstudent.exp ≥ job.minExp"]
+    A --> E["Remote Fit\nremoteMode + location"]
+
+    B -- "× 0.60" --> F["Weighted Sum"]
+    C -- "× 0.20" --> F
+    D -- "× 0.15" --> F
+    E -- "× 0.05" --> F
+
+    F --> G["score = round(sum × 100)"]
+    G --> H{"Band?"}
+    H -- "≥ 80" --> I["🟢 Strong"]
+    H -- "≥ 60" --> J["🔵 Good"]
+    H -- "≥ 40" --> K["🟡 Fair"]
+    H -- "< 40" --> L["🔴 Low"]
 ```
 
 #### Factor Details
@@ -488,69 +494,83 @@ CredX/                              ← Monorepo root
 
 ## 🗄️ Data Model
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         DATABASE SCHEMA (ER Diagram)                     │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+erDiagram
+    users {
+        BIGINT id PK
+        VARCHAR email UK
+        VARCHAR password
+        VARCHAR first_name
+        VARCHAR last_name
+        ENUM role "STUDENT | RECRUITER"
+        DOUBLE gpa
+        VARCHAR work_auth_status
+        INT experience_years
+        VARCHAR desired_role
+        VARCHAR preferred_location
+        BOOLEAN open_to_remote
+        BOOLEAN profile_completed
+        INSTANT created_at
+    }
 
-┌─────────────────────┐         ┌──────────────────────────┐
-│       users         │         │          jobs             │
-├─────────────────────┤         ├──────────────────────────┤
-│ id          BIGINT  │◄─┐   ┌─►│ id            BIGINT      │
-│ email       VARCHAR │  │   │  │ title         VARCHAR     │
-│ password    VARCHAR │  │   │  │ description   VARCHAR     │
-│ first_name  VARCHAR │  │   │  │ company       VARCHAR     │
-│ last_name   VARCHAR │  │   │  │ role_type     VARCHAR     │
-│ role        ENUM    │  │   │  │ employment_type ENUM      │
-│ gpa         DOUBLE  │  │   │  │ location      VARCHAR     │
-│ work_auth   VARCHAR │  │   │  │ remote_mode   ENUM        │
-│ exp_years   INT     │  │   │  │ visa_sponsor  BOOLEAN     │
-│ desired_role VARCHAR│  │   │  │ min_gpa       DOUBLE      │
-│ pref_location VARCHAR│  │   │  │ min_experience INT        │
-│ open_remote BOOLEAN │  │   │  │ status        ENUM        │
-│ profile_done BOOLEAN│  │   │  │ posted_by_id  FK→users    │
-│ created_at  INSTANT │  │   │  │ created_at    INSTANT     │
-└─────────────────────┘  │   │  └──────────────────────────┘
-          │               │   │               │
-          │ M             │   │               │ M
-          ▼               │   │               ▼
-┌─────────────────────┐  │   │  ┌──────────────────────────┐
-│     user_skills     │  │   │  │        job_skills         │
-├─────────────────────┤  │   │  ├──────────────────────────┤
-│ user_id  FK→users   │  │   │  │ job_id   FK→jobs          │
-│ skill_id FK→skills  │  │   │  │ skill_id FK→skills        │
-└────────────┬────────┘  │   │  └───────────┬──────────────┘
-             │ N         │   │              │ N
-             ▼           │   │              ▼
-    ┌──────────────┐     │   │     ┌──────────────┐
-    │    skills    │     │   │     │    skills    │
-    ├──────────────┤     │   │     │  (same table)│
-    │ id   BIGINT  │     │   │     └──────────────┘
-    │ name VARCHAR │     │   │
-    └──────────────┘     │   │
-                         │   │
-          ┌──────────────┴───┴──────────────┐
-          │          match_scores            │
-          ├─────────────────────────────────┤
-          │ id           BIGINT              │
-          │ user_id      FK→users            │
-          │ job_id       FK→jobs             │
-          │ score        INT (0-100)         │
-          │ breakdown    JSON (factors)      │
-          │ computed_at  INSTANT             │
-          │ UNIQUE(user_id, job_id)          │
-          └─────────────────────────────────┘
+    jobs {
+        BIGINT id PK
+        VARCHAR title
+        VARCHAR description
+        VARCHAR company
+        VARCHAR role_type
+        ENUM employment_type "FULL_TIME | INTERNSHIP | PART_TIME"
+        VARCHAR location
+        ENUM remote_mode "ONSITE | REMOTE | HYBRID"
+        BOOLEAN visa_sponsorship
+        DOUBLE min_gpa
+        INT min_experience
+        ENUM status "ACTIVE | EXPIRED"
+        BIGINT posted_by_id FK
+        INSTANT created_at
+    }
 
-          ┌──────────────────────────────────┐
-          │          applications             │
-          ├──────────────────────────────────┤
-          │ id          BIGINT               │
-          │ user_id     FK→users             │
-          │ job_id      FK→jobs              │
-          │ status      VARCHAR (APPLIED)    │
-          │ applied_at  INSTANT              │
-          │ UNIQUE(user_id, job_id)          │
-          └──────────────────────────────────┘
+    skills {
+        BIGINT id PK
+        VARCHAR name UK
+    }
+
+    user_skills {
+        BIGINT user_id FK
+        BIGINT skill_id FK
+    }
+
+    job_skills {
+        BIGINT job_id FK
+        BIGINT skill_id FK
+    }
+
+    match_scores {
+        BIGINT id PK
+        BIGINT user_id FK
+        BIGINT job_id FK
+        INT score "0-100"
+        JSON breakdown "factors map"
+        INSTANT computed_at
+    }
+
+    applications {
+        BIGINT id PK
+        BIGINT user_id FK
+        BIGINT job_id FK
+        VARCHAR status "APPLIED"
+        INSTANT applied_at
+    }
+
+    users ||--o{ user_skills : "has skills"
+    skills ||--o{ user_skills : "used by students"
+    jobs ||--o{ job_skills : "requires skills"
+    skills ||--o{ job_skills : "required by jobs"
+    users ||--o{ jobs : "posts (recruiter)"
+    users ||--o{ match_scores : "has scores"
+    jobs ||--o{ match_scores : "scored against"
+    users ||--o{ applications : "applies to"
+    jobs ||--o{ applications : "receives"
 ```
 
 ---
@@ -774,41 +794,35 @@ Step 7 — Login as Recruiter
 
 ## 🛡️ Security Model
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                    SECURITY LAYERS                            │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  1. Transport Security                                       │
-│     CORS configured to allow only localhost origins (dev)    │
-│     → production: whitelist deployed frontend domain         │
-│                                                              │
-│  2. Authentication                                           │
-│     POST /auth/login → bcrypt password verify               │
-│     → Issue signed HS256 JWT (24h expiry)                    │
-│     → All protected endpoints require Bearer token           │
-│                                                              │
-│  3. JWT Validation Filter (per-request)                      │
-│     JwtAuthFilter extends OncePerRequestFilter               │
-│     → Extract & verify signature                             │
-│     → Load UserDetails from DB                               │
-│     → Set SecurityContext                                    │
-│                                                              │
-│  4. Role-Based Access Control                                │
-│     STUDENT role:   /profile, /matches, /applications        │
-│     RECRUITER role: /jobs (POST/PUT/DELETE)                  │
-│     Public:         /auth/**, /health, /skills               │
-│                                                              │
-│  5. Input Validation                                         │
-│     Spring @Valid + Bean Validation annotations              │
-│     → DTO-level constraints (not-null, size, pattern)        │
-│     → Prevents injection at the request boundary             │
-│                                                              │
-│  6. Password Storage                                         │
-│     BCryptPasswordEncoder (strength 10)                      │
-│     → One-way hash, never stored in plaintext                │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    REQ["Incoming HTTP Request"] --> CORS
+
+    CORS["1️⃣ CORS Filter\nAllow: localhost dev origins\nProd: whitelist frontend domain"]
+    CORS --> JWT_FILTER
+
+    JWT_FILTER["2️⃣ JwtAuthFilter\nOncePerRequestFilter\nExtract Bearer token → verify HS256 signature\nLoad UserDetails from DB\nSet SecurityContext"]
+    JWT_FILTER --> PUBLIC{"Public\nendpoint?"}
+
+    PUBLIC -- "Yes\n/auth/** · /health · /skills" --> HANDLER["✅ Controller Handler"]
+    PUBLIC -- "No" --> RBAC
+
+    RBAC["3️⃣ Role-Based Access Control"]
+    RBAC --> STUDENT_CHECK{"STUDENT\nrole?"}
+    RBAC --> RECRUITER_CHECK{"RECRUITER\nrole?"}
+
+    STUDENT_CHECK -- "✅ /profile\n/matches\n/applications" --> VALIDATION
+    RECRUITER_CHECK -- "✅ POST/PUT/DELETE\n/jobs" --> VALIDATION
+    STUDENT_CHECK -- "❌ Wrong role" --> FORBIDDEN["403 Forbidden"]
+    RECRUITER_CHECK -- "❌ Wrong role" --> FORBIDDEN
+
+    VALIDATION["4️⃣ Input Validation\nSpring @Valid + Bean Validation\nDTO-level constraints\nnot-null · size · pattern"]
+    VALIDATION --> BCRYPT
+
+    BCRYPT["5️⃣ Password Storage\nBCryptPasswordEncoder strength=10\nOne-way hash · never plaintext"]
+    BCRYPT --> HANDLER
+
+    HANDLER --> RESPONSE["✅ 200 / 201 Response"]
 ```
 
 ---

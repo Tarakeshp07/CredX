@@ -94,158 +94,142 @@ The rule-based weighted scorer is:
 
 CredX is a **three-tier polyglot microservices architecture**:
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              CLIENT LAYER                                    │
-│                                                                               │
-│   ┌───────────────────────────────────────────────────────────────────────┐  │
-│   │                    Angular 19 SPA (Port :4200)                        │  │
-│   │                                                                       │  │
-│   │  ┌──────────────┐  ┌──────────────┐  ┌────────────────────────────┐  │  │
-│   │  │  Auth Module  │  │  Dashboard   │  │     Profile Module         │  │  │
-│   │  │  Login /      │  │  Job Feed    │  │  Skills · GPA · Work Auth  │  │  │
-│   │  │  Register     │  │  Match Score │  │  Experience · Location     │  │  │
-│   │  │               │  │  Filters     │  │                            │  │  │
-│   │  └──────────────┘  └──────────────┘  └────────────────────────────┘  │  │
-│   │                                                                       │  │
-│   │      Tailwind CSS v4 · Angular Signals · RxJS · HttpClient           │  │
-│   └───────────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────┬───────────────────────────────────────┘
-                                      │ REST/JSON  (JWT Bearer Token)
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                             API GATEWAY LAYER                                │
-│                                                                               │
-│   ┌───────────────────────────────────────────────────────────────────────┐  │
-│   │               Spring Boot 4.1 Backend (Port :8080)                    │  │
-│   │                                                                       │  │
-│   │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────────┐  │  │
-│   │  │   Auth     │  │  Profile   │  │    Jobs    │  │   Matches &    │  │  │
-│   │  │ Controller │  │ Controller │  │ Controller │  │  Applications  │  │  │
-│   │  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └───────┬────────┘  │  │
-│   │        └───────────────┴───────────────┴──────────────────┘           │  │
-│   │                               │                                        │  │
-│   │  ┌────────────────────────────────────────────────────────────────┐   │  │
-│   │  │ Service Layer: AuthService · ProfileService · JobService       │   │  │
-│   │  │               MatchService · ScoringService · ApplicationService│   │  │
-│   │  └───────────────────────────┬────────────────────────────────────┘   │  │
-│   │                              │ Spring Security + JWT Filter            │  │
-│   │  ┌───────────────────────────┴─────────────────────────────────────┐  │  │
-│   │  │         JPA/Hibernate ORM     Spring Data Repositories          │  │  │
-│   │  └─────────────────────────────────────────────────────────────────┘  │  │
-│   └───────────────────────────────────────────────────────────────────────┘  │
-└──────────────────────┬──────────────────────────────────────────────────────┘
-                       │                              │ HTTP Delegation
-     ┌─────────────────┘                             ▼
-     ▼                              ┌─────────────────────────────────────┐
-┌──────────────────────────────┐    │  Python FastAPI Microservice (:8000) │
-│   PostgreSQL 16 (Port :5432) │    │                                      │
-│                              │    │  ┌────────────────────────────────┐  │
-│   Tables:                    │    │  │  RuleEngine                    │  │
-│   · users                    │    │  │  POST /score                   │  │
-│   · jobs                     │    │  │  POST /score/batch             │  │
-│   · skills                   │    │  │  GET  /health                  │  │
-│   · user_skills (M-N)        │    │  └────────────────────────────────┘  │
-│   · job_skills  (M-N)        │    │                                      │
-│   · match_scores             │    │  Pydantic models · Uvicorn           │
-│   · applications             │    └─────────────────────────────────────┘
-└──────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph CLIENT["🖥️ CLIENT LAYER — Angular 19 SPA (Port :4200)"]
+        direction LR
+        AUTH_MOD["🔐 Auth Module\nLogin · Register"]
+        DASH_MOD["📊 Dashboard Module\nJob Feed · Match Score\nFilters · Score Rings"]
+        PROF_MOD["👤 Profile Module\nSkills · GPA · Work Auth\nExperience · Location"]
+    end
+
+    subgraph BACKEND["⚙️ API LAYER — Spring Boot 4.1 (Port :8080)"]
+        direction TB
+        subgraph CONTROLLERS["REST Controllers"]
+            C_AUTH["AuthController\nPOST /auth/login\nPOST /auth/register"]
+            C_PROF["ProfileController\nGET/PUT /profile"]
+            C_JOB["JobController\nGET/POST /jobs"]
+            C_MATCH["MatchController\nGET /matches"]
+            C_APP["ApplicationController\nPOST /applications"]
+        end
+        subgraph SERVICES["Service Layer"]
+            S_AUTH["AuthService\nJWT issuance · bcrypt"]
+            S_SCORE["ScoringService\n0.60×Skill + 0.20×GPA\n+ 0.15×Exp + 0.05×Remote"]
+            S_MATCH["MatchService\nOrchestrates pipeline"]
+            S_JOB["JobService\nHard-filter SQL query"]
+            S_PROF["ProfileService"]
+        end
+        SEC["🔒 Spring Security + JWT Filter\nRole-based access: STUDENT | RECRUITER"]
+        ORM["JPA / Hibernate ORM · Spring Data Repositories"]
+    end
+
+    subgraph AI["🐍 AI LAYER — Python FastAPI (Port :8000)"]
+        RULE["RuleEngine\nPOST /score\nPOST /score/batch"]
+    end
+
+    subgraph DATA["🗄️ DATA LAYER — PostgreSQL 16 (Port :5432)"]
+        direction LR
+        T_USERS["users"]
+        T_JOBS["jobs"]
+        T_SKILLS["skills"]
+        T_US["user_skills M-N"]
+        T_JS["job_skills M-N"]
+        T_MS["match_scores cache"]
+        T_APP["applications"]
+    end
+
+    CLIENT -- "REST/JSON\nJWT Bearer Token" --> SEC
+    SEC --> CONTROLLERS
+    CONTROLLERS --> SERVICES
+    S_MATCH --> S_SCORE
+    S_MATCH --> S_JOB
+    SERVICES --> ORM
+    ORM --> DATA
+    S_MATCH -. "Optional HTTP delegation" .-> RULE
 ```
 
 ---
 
 ## 🔄 End-to-End Flow Diagram
 
-### Student Journey
+### 🎓 Student Journey
 
-```
-  ┌──────────────────────────────────────────────────────────────────────────┐
-  │                         STUDENT USER JOURNEY                              │
-  └──────────────────────────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Student as 🎓 Student
+    participant SPA as Angular SPA
+    participant API as Spring Boot API
+    participant DB as PostgreSQL
 
-  [Browser]                  [Angular SPA]              [Spring Boot API]
-      │                           │                            │
-      │──── Navigate /login ─────►│                            │
-      │──── POST credentials ────►│────── POST /auth/login ───►│
-      │                           │                            │── bcrypt verify
-      │                           │                            │── sign JWT
-      │◄── JWT Token (localStorage)◄──────────────────────────│
-      │                           │                            │
-      │──── Navigate /profile ───►│──── GET /profile ─────────►│
-      │◄──── Profile Form ─────────│◄──── Profile data ─────────│
-      │                           │                            │
-      │──── Fill: Skills, GPA ───►│                            │
-      │     Work Auth, Location   │                            │
-      │──── Submit Profile ──────►│──── PUT /profile ──────────►│
-      │                           │                            │── Save to DB
-      │                           │                            │── profileCompleted = true
-      │                           │                            │
-      │──── Navigate /dashboard ─►│──── GET /matches ──────────►│
-      │                           │     ?remoteMode=REMOTE      │
-      │                           │     ?visaSponsorship=true   │
-      │                           │                    ┌───────┴────────┐
-      │                           │                    │  MatchService  │
-      │                           │                    │                │
-      │                           │                    │ 1. Load student│
-      │                           │                    │    with skills │
-      │                           │                    │                │
-      │                           │                    │ 2. SQL: query  │
-      │                           │                    │    ACTIVE jobs │
-      │                           │                    │    (hard filter│
-      │                           │                    │    in WHERE)   │
-      │                           │                    │                │
-      │                           │                    │ 3. Score each  │
-      │                           │                    │    job via     │
-      │                           │                    │    Scoring     │
-      │                           │                    │    Service     │
-      │                           │                    │                │
-      │                           │                    │ 4. Drop hard   │
-      │                           │                    │    fails (visa)│
-      │                           │                    │                │
-      │                           │                    │ 5. Sort desc   │
-      │                           │                    │    by score    │
-      │                           │                    │                │
-      │                           │                    │ 6. Upsert cache│
-      │                           │                    │    match_scores│
-      │                           │                    └───────┬────────┘
-      │◄──── Ranked Job Feed ──────│◄── MatchListResponse ──────│
-      │      [Score Ring: 87%]     │    [{job, score, band,     │
-      │      [Score Ring: 74%]     │      matched, missing}]    │
-      │      [Score Ring: 61%]     │                            │
-      │                           │                            │
-      │──── Click a Job ─────────►│── GET /matches/{id}/score ─►│── Re-score
-      │◄── Score Breakdown ────────│◄── ScoreResult ────────────│
-      │    Skill: 80%             │                            │
-      │    GPA:  100%             │                            │
-      │    Exp:   75%             │                            │
-      │    Remote: 85%            │                            │
-      │    Missing: [Docker, AWS] │                            │
-      │                           │                            │
-      │──── Click Apply ─────────►│── POST /applications ──────►│
-      │◄── Applied ✓ ──────────────│◄── 201 Created ─────────────│
+    Student->>SPA: Navigate /login
+    Student->>SPA: Submit email + password
+    SPA->>API: POST /auth/login
+    API->>DB: Lookup user, bcrypt verify
+    DB-->>API: User record
+    API-->>SPA: JWT token (signed HS256)
+    SPA-->>Student: Store token, redirect /dashboard
+
+    Student->>SPA: Navigate /profile
+    SPA->>API: GET /profile (Bearer JWT)
+    API-->>SPA: Profile data
+    Student->>SPA: Fill Skills, GPA, Work Auth, Location
+    SPA->>API: PUT /profile
+    API->>DB: Save profile, profileCompleted = true
+    API-->>SPA: 200 OK
+
+    Student->>SPA: Navigate /dashboard
+    SPA->>API: GET /matches?remoteMode=REMOTE&visaSponsorship=true
+    Note over API: MatchService pipeline
+    API->>DB: 1. Load student with skills
+    API->>DB: 2. SQL hard-filter — ACTIVE jobs only
+    Note over API: ScoringService per job
+    API->>API: 3. score = 0.60×Skill + 0.20×GPA + 0.15×Exp + 0.05×Remote
+    API->>API: 4. Drop visa hard-fails (hardPass = false)
+    API->>API: 5. Sort descending by score
+    API->>DB: 6. Upsert match_scores cache
+    API-->>SPA: MatchListResponse [{job, score, band, matched, missing}]
+    SPA-->>Student: Ranked job feed with Score Rings (87% · 74% · 61%)
+
+    Student->>SPA: Click a job card
+    SPA->>API: GET /matches/{jobId}/score
+    API-->>SPA: ScoreResult breakdown (Skill 80% · GPA 100% · Exp 75% · Remote 85%)
+    SPA-->>Student: Score breakdown + Missing skills hint
+
+    Student->>SPA: Click Apply
+    SPA->>API: POST /applications/{jobId}
+    API->>DB: Insert application record UNIQUE(user_id, job_id)
+    API-->>SPA: 201 Created
+    SPA-->>Student: Applied ✓
 ```
 
-### Recruiter Journey
+---
 
-```
-  [Recruiter Browser]         [Angular SPA]              [Spring Boot API]
-         │                         │                            │
-         │──── POST /auth/register►│──── POST /auth/register ──►│
-         │   role: RECRUITER        │                            │── Store role=RECRUITER
-         │◄── JWT ─────────────────│◄──── JWT ─────────────────│
-         │                         │                            │
-         │──── Fill Job Form ──────►│                            │
-         │   Title, Company,        │                            │
-         │   Skills Required,       │                            │
-         │   Min GPA, Min Exp,      │                            │
-         │   Remote Mode, Visa     │                            │
-         │──── Submit ─────────────►│──── POST /jobs ────────────►│
-         │                         │    [RECRUITER role required]│
-         │◄── Job Created ──────────│◄──── 201 Created ──────────│
-         │                         │                             │
-         │                         │   Job enters matching pool  │
-         │                         │   All students' dashboards  │
-         │                         │   update on next request    │
+### 💼 Recruiter Journey
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Recruiter as 💼 Recruiter
+    participant SPA as Angular SPA
+    participant API as Spring Boot API
+    participant DB as PostgreSQL
+
+    Recruiter->>SPA: Navigate /register
+    Recruiter->>SPA: Fill details, role = RECRUITER
+    SPA->>API: POST /auth/register {role: RECRUITER}
+    API->>DB: Hash password, store user with RECRUITER role
+    API-->>SPA: JWT token
+    SPA-->>Recruiter: Redirect to dashboard
+
+    Recruiter->>SPA: Navigate /jobs/new
+    Recruiter->>SPA: Fill Title, Company, Skills Required,\nMin GPA, Min Exp, Remote Mode, Visa
+    SPA->>API: POST /jobs (RECRUITER role required)
+    API->>DB: Insert job + required skills (job_skills join table)
+    API-->>SPA: 201 Created
+    SPA-->>Recruiter: Job live in matching pool
+
+    Note over DB,API: All student dashboards reflect\nthe new job on next GET /matches
 ```
 
 ---

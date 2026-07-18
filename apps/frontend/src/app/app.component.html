@@ -1,0 +1,366 @@
+<!-- ═══════════════════════════════════════════════════════════════════
+     CredX App Shell
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ── Navigation Bar ── -->
+@if (!isAuthRoute()) {
+  <header
+    class="credx-nav"
+    [class.credx-nav--scrolled]="isScrolled()"
+  >
+    <div class="credx-nav__inner page-container">
+
+      <!-- Logo -->
+      <a routerLink="/dashboard" class="credx-nav__logo" (click)="closeMenu()">
+        <svg class="credx-nav__logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#a855f7"/>
+              <stop offset="1" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="8" fill="url(#logoGrad)" opacity="0.15"/>
+          <path d="M8 10h10a6 6 0 0 1 0 12H8" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M8 16h8" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="1.5" fill="#22d3ee"/>
+        </svg>
+        <span class="credx-nav__logo-text">
+          Cred<span class="gradient-text">X</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="credx-nav__links">
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="credx-nav__link--active"
+          class="credx-nav__link"
+          (click)="closeMenu()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="credx-nav__link-icon">
+            <path d="M2 10a8 8 0 1 1 16 0A8 8 0 0 1 2 10Zm5.5-2.5a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0ZM10 12a5.99 5.99 0 0 0-4.793 2.39A6.483 6.483 0 0 0 10 16.5a6.483 6.483 0 0 0 4.793-2.11A5.99 5.99 0 0 0 10 12Z" />
+          </svg>
+          Dashboard
+        </a>
+        @if (isLoggedIn()) {
+          <a
+            routerLink="/profile"
+            routerLinkActive="credx-nav__link--active"
+            class="credx-nav__link"
+            (click)="closeMenu()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="credx-nav__link-icon">
+              <path d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z" />
+            </svg>
+            Profile
+          </a>
+        }
+      </nav>
+
+      <!-- Right Section -->
+      <div class="credx-nav__actions">
+        @if (isLoggedIn()) {
+          <!-- User Avatar + Logout -->
+          <div class="credx-nav__user">
+            <div class="credx-nav__avatar">
+              {{ currentUser()?.firstName?.charAt(0)?.toUpperCase() || currentUser()?.email?.charAt(0)?.toUpperCase() || 'U' }}
+            </div>
+            <span class="credx-nav__username">{{ displayName() || 'User' }}</span>
+          </div>
+          <button class="btn-ghost credx-nav__logout" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;">
+              <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M6 10a.75.75 0 0 1 .75-.75h9.546l-1.048-.943a.75.75 0 1 1 1.004-1.114l2.5 2.25a.75.75 0 0 1 0 1.114l-2.5 2.25a.75.75 0 1 1-1.004-1.114l1.048-.943H6.75A.75.75 0 0 1 6 10Z" clip-rule="evenodd" />
+            </svg>
+            Sign out
+          </button>
+        } @else {
+          <a routerLink="/login" class="btn-ghost">Sign in</a>
+          <a routerLink="/register" class="btn-primary">Get started</a>
+        }
+
+        <!-- Mobile Hamburger -->
+        <button class="credx-nav__hamburger" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen()">
+          @if (isMenuOpen()) {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;">
+              <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;">
+              <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    @if (isMenuOpen()) {
+      <div class="credx-nav__mobile-menu animate-fade-in">
+        <a routerLink="/dashboard" class="credx-nav__mobile-link" routerLinkActive="credx-nav__mobile-link--active" (click)="closeMenu()">Dashboard</a>
+        @if (isLoggedIn()) {
+          <a routerLink="/profile" class="credx-nav__mobile-link" routerLinkActive="credx-nav__mobile-link--active" (click)="closeMenu()">Profile</a>
+          <hr class="divider" style="margin: 8px 0;">
+          <button class="credx-nav__mobile-link credx-nav__mobile-link--danger" (click)="logout()">Sign out</button>
+        } @else {
+          <a routerLink="/login" class="credx-nav__mobile-link" (click)="closeMenu()">Sign in</a>
+          <a routerLink="/register" class="credx-nav__mobile-link credx-nav__mobile-link--accent" (click)="closeMenu()">Get started</a>
+        }
+      </div>
+    }
+  </header>
+}
+
+<!-- ── Page Content ── -->
+<main [class.credx-main]="!isAuthRoute()">
+  <router-outlet />
+</main>
+
+<!-- ── Footer (shown only when logged in) ── -->
+@if (isLoggedIn() && !isAuthRoute()) {
+  <footer class="credx-footer">
+    <div class="page-container">
+      <div class="credx-footer__inner">
+        <span class="credx-footer__brand">Cred<span class="gradient-text">X</span></span>
+        <span class="credx-footer__tagline">AI-Powered Job Matching</span>
+        <span class="credx-footer__copy">&copy; 2026 CredX Hackathon</span>
+      </div>
+    </div>
+  </footer>
+}
+
+<!-- ── Component Styles ── -->
+<style>
+  /* Navigation */
+  .credx-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7, 7, 15, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .credx-nav--scrolled {
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    border-bottom-color: rgba(124, 111, 247, 0.1);
+  }
+
+  .credx-nav__inner {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    gap: 24px;
+  }
+
+  .credx-nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .credx-nav__logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .credx-nav__logo-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #e2e8f0;
+    letter-spacing: -0.02em;
+  }
+
+  .credx-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .credx-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .credx-nav__link:hover {
+    color: #e2e8f0;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .credx-nav__link--active {
+    color: #a5b4fc;
+    background: rgba(124, 111, 247, 0.1);
+  }
+
+  .credx-nav__link-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .credx-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  .credx-nav__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .credx-nav__avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c6ff7, #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .credx-nav__username {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .credx-nav__logout {
+    padding: 7px 14px;
+    font-size: 0.85rem;
+  }
+
+  .credx-nav__hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.2s;
+  }
+
+  .credx-nav__hamburger:hover {
+    color: #e2e8f0;
+  }
+
+  .credx-nav__mobile-menu {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 12px 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .credx-nav__mobile-link {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.2s;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .credx-nav__mobile-link:hover,
+  .credx-nav__mobile-link--active {
+    color: #e2e8f0;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .credx-nav__mobile-link--accent {
+    color: #a5b4fc;
+  }
+
+  .credx-nav__mobile-link--danger {
+    color: #f87171;
+  }
+
+  /* Main content */
+  .credx-main {
+    min-height: calc(100vh - 64px - 56px);
+  }
+
+  /* Footer */
+  .credx-footer {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 16px 0;
+    margin-top: 48px;
+  }
+
+  .credx-footer__inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .credx-footer__brand {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #e2e8f0;
+  }
+
+  .credx-footer__tagline {
+    font-size: 0.8rem;
+    color: #475569;
+  }
+
+  .credx-footer__copy {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: #334155;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .credx-nav__links {
+      display: none;
+    }
+
+    .credx-nav__user,
+    .credx-nav__username,
+    .credx-nav__logout {
+      display: none;
+    }
+
+    .credx-nav__hamburger {
+      display: flex;
+    }
+
+    .credx-nav__actions > a {
+      display: none;
+    }
+  }
+</style>
+
+<app-toast></app-toast>

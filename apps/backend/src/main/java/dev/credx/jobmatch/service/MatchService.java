@@ -26,18 +26,17 @@ public class MatchService {
     private final ScoringService scoring;
     private final MatchScoreRepository matchScores;
     private final ApplicationRepository applications;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public MatchService(UserRepository users, JobRepository jobs, JobService jobService,
                         ScoringService scoring, MatchScoreRepository matchScores,
-                        ApplicationRepository applications, ObjectMapper objectMapper) {
+                        ApplicationRepository applications) {
         this.users = users;
         this.jobs = jobs;
         this.jobService = jobService;
         this.scoring = scoring;
         this.matchScores = matchScores;
         this.applications = applications;
-        this.objectMapper = objectMapper;
     }
 
     private User loadStudent(Long userId) {
